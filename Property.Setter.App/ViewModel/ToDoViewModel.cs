@@ -19,46 +19,28 @@ namespace Property.Setter.App.ViewModel
         public string Name
         {
             get => _toDo.Name;
-            set
-            {
-                var name = _toDo.Name;
-                if (SetProperty(
-                    ref name,
-                    value))
-                {
-                    _toDo.Name = name;
-                }
-            }
+            set => SetProperty(
+                _toDo,
+                t => t.Name,
+                value);
         }
 
         public string Category
         {
             get => _toDo.Category;
-            set
-            {
-                var category = _toDo.Category;
-                if (SetProperty(
-                    ref category,
-                    value))
-                {
-                    _toDo.Category = category;
-                }
-            }
+            set => SetProperty(
+                _toDo,
+                t => t.Category,
+                value);
         }
 
         public DateTime Date
         {
             get => _toDo.Date;
-            set
-            {
-                var date = _toDo.Date;
-                if (SetProperty(
-                    ref date,
-                    value))
-                {
-                    _toDo.Date = date;
-                }
-            }
+            set => SetProperty(
+                _toDo,
+                t => t.Date,
+                value);
         }
     }
 }

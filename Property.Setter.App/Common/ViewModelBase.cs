@@ -74,7 +74,7 @@ namespace Property.Setter.App.Common
             }
         }
 
-        protected bool SetProperty<TClassType, TValueType>(TClassType classObj, Expression<Func<TClassType, TValueType>> outExpr, TValueType value, params Expression<Func<object>>[] propertyExprs)
+        protected bool SetProperty<TClassType, TValueType>(TClassType classObj, Expression<Func<TClassType, TValueType>> outExpr, TValueType value, [CallerMemberName] string propertyName = null)
         {
             var exprBody = outExpr.Body;
             if (exprBody is UnaryExpression)
@@ -91,10 +91,15 @@ namespace Property.Setter.App.Common
                 return false;
             }
             prop.SetValue(classObj, value, null);
-            foreach (var propertyExpr in propertyExprs)
-            {
-                OnPropertyChanged(propertyExpr);
-            }
+
+            OnPropertyChanged(propertyName);
+
+            return true;
+        }
+
+        protected bool SetFromExpression<TClassType, TValueType>(TClassType classObj, Expression<Func<TClassType, TValueType>> outExpr, TValueType value)
+        {
+            
 
             return true;
         }

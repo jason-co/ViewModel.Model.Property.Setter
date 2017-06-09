@@ -1,0 +1,124 @@
+﻿<Page
+    x:Class="Property.Setter.UWP.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:view="using:Property.Setter.UWP.View"
+    xmlns:viewModel="using:Property.Setter.UWP.ViewModel"
+    xmlns:converters="using:Property.Setter.UWP.Common"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <x:Boolean x:Key="True">True</x:Boolean>
+        <x:Boolean x:Key="False">False</x:Boolean>
+    </Page.Resources>
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="To Do Application"
+                   FontWeight="Bold"
+                   FontSize="24"
+                   HorizontalAlignment="Center"
+                   Margin="8"/>
+
+        <ListBox Grid.Row="1"
+                 ItemsSource="{Binding ToDoItems}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="viewModel:ToDoViewModel">
+                    <view:ToDoView/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Button Grid.Row="2"
+                Margin="0,8,0,0"
+                Content="Create"
+                Command="{Binding OpenCreateDialogCommand}"
+                HorizontalAlignment="Stretch"/>
+
+        <Border Grid.RowSpan="3" 
+                Background="#66000000" 
+                Visibility="{Binding Path=OpenCreateDialog, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+        <Border Grid.RowSpan="3"
+                Background="White" 
+                Margin="24"
+                Padding="12"
+                Visibility="{Binding Path=OpenCreateDialog, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.ColumnSpan="3" 
+                           Text="Create To Do"
+                           FontWeight="Bold"
+                           FontSize="18"
+                           HorizontalAlignment="Center"
+                           Margin="8"/>
+
+                <TextBlock Grid.Row="1" 
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Text="Name"/>
+                <TextBox Grid.Row="1"
+                         Grid.Column="2"
+                         VerticalAlignment="Center"
+                         Text="{Binding Path=CreateToDo.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
+                <TextBlock Grid.Row="2" 
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Text="Category"/>
+                <TextBox Grid.Row="2"
+                         Grid.Column="2"
+                         VerticalAlignment="Center"
+                         Text="{Binding Path=CreateToDo.Category, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
+                <TextBlock Grid.Row="3" 
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Text="Date"/>
+                <CalendarDatePicker Grid.Row="3"
+                                    Grid.Column="2"
+                                    VerticalAlignment="Center"
+                                    Date="{Binding Path=CreateToDo.Date, Mode=TwoWay}"/>
+
+                <Button Grid.Row="4"
+                        Command="{Binding CloseCreateDialogCommand}"
+                        Content="Save"
+                        CommandParameter="{StaticResource True}"
+                        HorizontalAlignment="Stretch">
+                </Button>
+
+                <Button Grid.Row="4"
+                        Grid.Column="2"
+                        Command="{Binding CloseCreateDialogCommand}"
+                        Content="Close"
+                        CommandParameter="{StaticResource False}"
+                        HorizontalAlignment="Stretch">
+                </Button>
+            </Grid>
+        </Border>
+    </Grid>
+</Page>

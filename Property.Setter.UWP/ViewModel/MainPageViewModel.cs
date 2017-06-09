@@ -1,12 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
-using Property.Setter.App.Common;
+using Property.Setter.UWP.Common;
 
-namespace Property.Setter.App.ViewModel
+namespace Property.Setter.UWP.ViewModel
 {
-    public class MainWindowViewModel : ViewModelBase
+    public class MainPageViewModel : ViewModelBase
     {
-        public MainWindowViewModel()
+        public MainPageViewModel()
         {
             ToDoItems = new ObservableCollection<ToDoViewModel>();
         }
@@ -41,7 +41,7 @@ namespace Property.Setter.App.ViewModel
 
         private void OpenCreateDialogExecute()
         {
-            CreateToDo = new ToDoViewModel();
+            CreateToDo = new ToDoViewModel(item => ToDoItems.Remove(item));
 
             OpenCreateDialog = true;
         }
@@ -64,21 +64,6 @@ namespace Property.Setter.App.ViewModel
             }
 
             OpenCreateDialog = false;
-        }
-
-        #endregion
-
-        #region Delete Item Command
-
-        private RelayCommand<ToDoViewModel> _deleteItemCommand;
-
-        public ICommand DeleteItemCommand => RelayCommand.CreateCommand(
-            ref _deleteItemCommand,
-            DeleteItemExecute);
-
-        private void DeleteItemExecute(ToDoViewModel item)
-        {
-            ToDoItems.Remove(item);
         }
 
         #endregion

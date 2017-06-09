@@ -76,7 +76,13 @@ namespace Property.Setter.App.Common
 
         protected bool SetProperty<TClassType, TValueType>(TClassType classObj, Expression<Func<TClassType, TValueType>> outExpr, TValueType value, params Expression<Func<object>>[] propertyExprs)
         {
-            var expr = (MemberExpression)outExpr.Body;
+            var exprBody = outExpr.Body;
+            if (exprBody is UnaryExpression)
+            {
+                exprBody = ((UnaryExpression)outExpr.Body).Operand;
+            }
+
+            var expr = (MemberExpression)exprBody;
             var prop = (PropertyInfo)expr.Member;
             var refValue = prop.GetValue(classObj, null);
 
